@@ -1,0 +1,164 @@
+/* ─────────────────────────────────────────────────────────────
+   Navbar — floating pill style
+   Two themes — SWAPPED from original:
+     default (.navbar)          → dark pill   — for Sheet 1 (dark bg)
+     .navbar--light             → light pill  — for Sheet 2 (light bg)
+   All colour properties transition so the switch crossfades.
+───────────────────────────────────────────────────────────── */
+
+.navbar {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: calc(100% - 4rem);
+  max-width: 1120px;
+
+  z-index: 1000;
+
+  /* ── Default: dark pill (sits on dark Sheet 1) ── */
+  background: rgba(14, 17, 26, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-radius: 999px;
+  border: 1px solid rgba(57, 255, 20, 0.15);
+
+  padding: 0 1.5rem;
+  height: 60px;
+
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 4px 24px rgba(0, 0, 0, 0.30),
+    0 1px 4px rgba(0, 0, 0, 0.20);
+
+  /* Smooth crossfade when theme switches */
+  transition:
+    background 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+/* ── Light variant — sits on the light Sheet 2 ── */
+.navbar--light {
+  background: rgba(242, 236, 202, 0.96);
+  border-color: rgba(0, 123, 255, 0.12);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 4px 24px rgba(0, 0, 0, 0.08),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* ─────────────────────── Shared structure ─────────────────── */
+
+.navbar__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+/* ── Logo ── */
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.navbar__logo-icon {
+  font-size: 1rem;
+  color: #39FF14;
+  line-height: 1;
+}
+
+.navbar__logo-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+
+  /* dark theme → off-white */
+  color: #f2ecca;
+  transition: color 0.4s ease;
+}
+
+/* light theme logo → blue */
+.navbar--light .navbar__logo-text {
+  color: #007bff;
+}
+
+/* ── Nav links ── */
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar__link {
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  text-decoration: none;
+
+  /* dark theme */
+  color: rgba(242, 236, 202, 0.65);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.navbar__link:hover {
+  background: rgba(242, 236, 202, 0.08);
+  color: #f2ecca;
+}
+
+/* light theme nav links */
+.navbar--light .navbar__link {
+  color: rgba(0, 123, 255, 0.70);
+}
+
+.navbar--light .navbar__link:hover {
+  background: rgba(0, 123, 255, 0.08);
+  color: #007bff;
+}
+
+/* ── CTA button ── */
+.navbar__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.15rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+
+  /* dark theme — neon green button */
+  background: #39FF14;
+  color: #0E111A;
+  transition: background 0.4s ease, transform 0.15s ease;
+}
+
+.navbar__cta:hover {
+  background: #2de010;
+  transform: scale(1.03);
+}
+
+/* light theme CTA — solid blue */
+.navbar--light .navbar__cta {
+  background: #007bff;
+  color: #f2ecca;
+}
+
+.navbar--light .navbar__cta:hover {
+  background: #351d73;
+}

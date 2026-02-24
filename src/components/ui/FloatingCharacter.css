@@ -1,0 +1,58 @@
+/* ─────────────────────────────────────────────────────────────
+   FloatingCharacter
+   Lives above both sheets at all times.
+
+   Coordinate system:
+     CSS anchor  : bottom: 4vh; right: 6vw
+     translateY 0    → bottom-right of Sheet 1 (fully visible)
+     translateY -25vh → middle-right of Sheet 2 (vertically centred)
+
+   z-index: 30
+     > hero sticky section (z:1)
+     > dark sheet (z:10)
+     < navbar (z:1000)  ← robot won't overlap navbar anyway
+───────────────────────────────────────────────────────────── */
+
+.floating-character {
+    /* Fixed so it's always in the viewport, independent of scroll */
+    position: fixed;
+
+    /*
+   * BASE ANCHOR — bottom-right corner.
+   * translateY(0)   → robot sits here = bottom-right of Sheet 1
+   * translateY(-Xvh) → robot floats up = middle-right of Sheet 2
+   */
+    bottom: 4vh;
+    right: 6vw;
+
+    /* Width drives the robot's size; height is auto via the img */
+    width: clamp(300px, 28vw, 420px);
+
+    /* ALWAYS above both layers */
+    z-index: 30;
+
+    /* Transform origin at the bottom-center so scale grows "upward"
+     — gives a more natural "rising" feel during parallax             */
+    transform-origin: bottom center;
+
+    /* Framer Motion drives transform — GPU-accelerated */
+    will-change: transform;
+
+    /* Never block pointer events on the sections below */
+    pointer-events: none;
+}
+
+.floating-character__img {
+    display: block;
+    width: 100%;
+    height: auto;
+
+    /* Crisp rendering at all sizes */
+    image-rendering: -webkit-optimize-contrast;
+
+    /* Drop shadow elevates the robot off whichever sheet is behind it */
+    filter: drop-shadow(0px 24px 48px rgba(0, 0, 0, 0.45)) drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.25));
+
+    user-select: none;
+    -webkit-user-drag: none;
+}

@@ -1,0 +1,19 @@
+/* ─── Scroll Container ────────────────────────────────────── */
+
+/**
+ * 280vh height:
+ *   First 100vh  → hero fills the viewport (sticky)
+ *   Next  180vh  → scroll budget for all animations
+ *                  (sheet slide-up + character parallax)
+ *   Increased from 230vh to give the slower sheet animation
+ *   enough room without feeling cramped at the end.
+ */
+.scroll-container {
+    position: relative;
+    height: 280vh;
+    width: 100%;
+
+    /* overflow: visible so the hero character can spill below
+     into where the dark sheet will slide up from             */
+    overflow: visible;
+}

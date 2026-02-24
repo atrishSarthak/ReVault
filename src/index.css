@@ -1,0 +1,61 @@
+/* ─── Global reset & base ──────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap');
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ─── Design tokens ────────────────────────────────────────── */
+:root {
+  /* Typography */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Rendering */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* ── Colour palette ── */
+  --color-light: #f2ecca;
+  /* Sheet 2 background (now the light sheet)  */
+  --color-dark: #0E111A;
+  /* Sheet 1 background (now the dark sheet)   */
+  --color-text: #007bff;
+  /* Primary text / accent on light bg         */
+  --color-accent: #39FF14;
+  /* Highlights & accents                      */
+
+  /* Derived alpha variants */
+  --color-text-60: rgba(0, 123, 255, 0.60);
+  --color-text-35: rgba(0, 123, 255, 0.35);
+  --color-accent-20: rgba(57, 255, 20, 0.20);
+  --color-on-dark: #ffffff;
+  --color-on-dark-55: rgba(255, 255, 255, 0.55);
+  --color-on-dark-35: rgba(255, 255, 255, 0.35);
+}
+
+/* ─── Base ─────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+  /* Sheet 1 is now dark */
+  background: var(--color-dark);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}

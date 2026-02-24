@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  role      Role     @default(BUYER)
+  createdAt DateTime @default(now())
+  assets    Asset[]
+}
+
+enum Role {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+model Asset {
+  id          String      @id @default(cuid())
+  title       String
+  description String
+  category    Category
+  price       Float
+  status      AssetStatus @default(PENDING)
+  sellerId    String
+  seller      User        @relation(fields: [sellerId], references: [id])
+  imageUrl    String?
+  createdAt   DateTime    @default(now())
+}
+
+enum Category {
+  GAMING
+  DIGITAL_CONTENT
+  EVENT_TICKET
+}
+
+enum AssetStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  SOLD
+}

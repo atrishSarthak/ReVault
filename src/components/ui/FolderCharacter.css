@@ -1,0 +1,169 @@
+/* ─────────────────────────────────────────────────────────────
+   FolderCharacter — cards only, no folder body
+   Fixed, z-index 30, permanently anchored in viewport.
+───────────────────────────────────────────────────────────── */
+
+/* ── Outer wrapper ───────────────────────────────────────────── */
+.folder-char {
+    position: fixed;
+
+    /*
+     * Vertically: bottom:42vh puts the base of the portrait card stack
+     * at 42% from the bottom, which centres the tall group visually.
+     *
+     * Horizontally: right:22vw moves the stack well away from the
+     * right edge and into the "right-of-centre" zone without
+     * crowding the hero headline on the left.
+     */
+    bottom: 30vh;
+    right: 22vw;
+
+    /* Larger cards */
+    width: clamp(280px, 26vw, 400px);
+
+    overflow: visible;
+
+    z-index: 30;
+    will-change: transform;
+    pointer-events: none;
+    transform-origin: bottom center;
+}
+
+/* ── Shared card styles ──────────────────────────────────────── */
+.folder-char__card {
+    position: absolute;
+    bottom: 0;
+
+    /* Horizontal anchor — FM x fans left/right from here */
+    left: 50%;
+
+    /* Portrait card — 68% of wrapper width */
+    width: 68%;
+    aspect-ratio: 3 / 4;
+
+    border-radius: 16px;
+    overflow: hidden;
+    background: #13171F;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    will-change: transform;
+
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.65),
+        0 3px 10px rgba(0, 0, 0, 0.45);
+
+    /*
+     * NO CSS transform — Framer Motion owns the full transform stack.
+     * FM start values encode initial fan; end values settle cards
+     * back to roughly the same place so they "stay" in Sheet 2.
+     */
+}
+
+.folder-char__card--1 {
+    z-index: 1;
+    filter: brightness(0.80) saturate(0.88);
+}
+
+.folder-char__card--2 {
+    z-index: 3;
+}
+
+.folder-char__card--3 {
+    z-index: 1;
+    filter: brightness(0.80) saturate(0.88);
+}
+
+/* ── Card image ──────────────────────────────────────────────── */
+.folder-char__card-img {
+    display: block;
+    width: 100%;
+    height: 72%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+/* ── Card label strip ────────────────────────────────────────── */
+.folder-char__card-label {
+    padding: 0.5rem 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    background: #13171F;
+}
+
+.folder-char__card-tag {
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #39FF14;
+    font-family: 'Inter', sans-serif;
+}
+
+.folder-char__card-name {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Carousel navigation buttons ─────────────────────────────── */
+.folder-char__nav {
+    position: absolute;
+    /* Vertically center relative to the folder character stack */
+    top: 80%;
+    /* Move it down into the black space, as requested */
+    /* 84% aligns exactly with the visual centre of the focal card 
+       since the card is left: 50% with width: 68% -> centre is 50 + 34 = 84% */
+    left: 84%;
+    width: 0;
+    z-index: 40;
+}
+
+.folder-char__nav-btn {
+    position: absolute;
+    top: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    /* Box shadow to lift them off the background */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.folder-char__nav-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+.folder-char__nav-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.folder-char__nav-btn--left {
+    left: 0;
+    /* Exactly mirrors the x: -230 Framer Motion offset */
+    margin-left: -230px;
+    transform: translate(-50%, -50%);
+}
+
+.folder-char__nav-btn--right {
+    left: 0;
+    /* Exactly mirrors the x: 230 Framer Motion offset */
+    margin-left: 230px;
+    transform: translate(-50%, -50%);
+}
