@@ -4,8 +4,7 @@ import LandingPage from './pages/LandingPage'
 import MarketplacePage from './pages/MarketplacePage'
 import SignInPage from './pages/SignInPage'
 import SignUpPage from './pages/SignUpPage'
-
-import SellerDashboard from './pages/SellerDashboard'
+import CreateListing from './pages/seller/CreateListing'
 
 function ProtectedRoute({ children }) {
   const { isSignedIn, isLoaded } = useAuth()
@@ -14,17 +13,21 @@ function ProtectedRoute({ children }) {
   return children
 }
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/marketplace" element={<MarketplacePage />} />
+
+        {/* Clerk Auth Routes */}
         <Route path="/sign-in/*" element={<SignInPage />} />
         <Route path="/sign-up/*" element={<SignUpPage />} />
+
+        {/* Protected Seller Flow */}
         <Route path="/seller" element={
           <ProtectedRoute>
-            <SellerDashboard />
+            <CreateListing />
           </ProtectedRoute>
         } />
       </Routes>

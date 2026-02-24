@@ -1,20 +1,13 @@
 import nacl from 'tweetnacl'
-import { encodeBase64, decodeBase64, encodeUTF8 } from 'tweetnacl-util'
+import { encodeBase64, encodeUTF8 } from 'tweetnacl-util'
 
-export async function encryptCredentialLocally(credentials, rsaPublicKeyPem) {
-    // 1. Serialize the password/credentials JSON to UTF-8
+export async function encryptCredentials(credentials, rsaPublicKeyPem) {
     const message = encodeUTF8(JSON.stringify(credentials))
-
-    // 2. Generate extremely strong AES (Salsa20/Poly1305) symmetric key + IV from NaCl
     const aesKey = nacl.randomBytes(32)
     const iv = nacl.randomBytes(24)
-
-    // 3. Encrypt the raw credentials using NaCl secret box
     const ciphertext = nacl.secretbox(message, iv, aesKey)
 
-    // 4. Encrypt the Symmetric AES key with the Backend Server's RSA public key.
-    // This guarantees that *only* the ReVault backend can decrypt the symmetric 
-    // key (using its RSA private key), ensuring zero man-in-the-middle attacks.
+    // Encrypt the AES key with server's RSA public key
     const crypto = window.crypto.subtle
     const importedKey = await crypto.importKey(
         'spki',
@@ -25,7 +18,6 @@ export async function encryptCredentialLocally(credentials, rsaPublicKeyPem) {
     )
     const encryptedKey = await crypto.encrypt({ name: 'RSA-OAEP' }, importedKey, aesKey)
 
-    // 5. Build Base64 strings for payload transmission
     return {
         ciphertext: encodeBase64(ciphertext),
         encryptedKey: encodeBase64(new Uint8Array(encryptedKey)),
@@ -33,7 +25,6 @@ export async function encryptCredentialLocally(credentials, rsaPublicKeyPem) {
     }
 }
 
-// Convert PEM format strings into raw ArrayBuffers for SubtleCrypto
 function pemToArrayBuffer(pem) {
     const b64 = pem.replace(/-----[^-]+-----/g, '').replace(/\s/g, '')
     const binary = atob(b64)
