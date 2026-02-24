@@ -29,11 +29,12 @@ model Asset {
   description String
   category    Category
   price       Float
-  status      AssetStatus @default(PENDING)
+  status      AssetStatus           @default(PENDING)
   sellerId    String
-  seller      User        @relation(fields: [sellerId], references: [id])
+  seller      User                  @relation(fields: [sellerId], references: [id])
   imageUrl    String?
-  createdAt   DateTime    @default(now())
+  createdAt   DateTime              @default(now())
+  credential  EncryptedCredential?
 }
 
 enum Category {
@@ -47,4 +48,13 @@ enum AssetStatus {
   VERIFIED
   REJECTED
   SOLD
+}
+
+model EncryptedCredential {
+  id           String @id @default(cuid())
+  assetId      String @unique
+  asset        Asset  @relation(fields: [assetId], references: [id])
+  ciphertext   String
+  encryptedKey String
+  iv           String
 }
