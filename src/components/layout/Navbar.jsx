@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
 import './Navbar.css'
 
 /**
@@ -30,10 +31,18 @@ function Navbar({ dark = false }) {
                     <li><a href="#about" className="navbar__link">About</a></li>
                 </ul>
 
-                {/* CTA */}
-                <button className="navbar__cta" aria-label="Launch app">
-                    Launch App
-                </button>
+                {/* CTA / Auth */}
+                <div className="navbar__auth">
+                    <SignedOut>
+                        <Link to="/sign-in" className="navbar__cta">
+                            Sign In
+                        </Link>
+                    </SignedOut>
+                    <SignedIn>
+                        <Link to="/seller" className="navbar__link" style={{ marginRight: '1rem' }}>Dashboard</Link>
+                        <UserButton />
+                    </SignedIn>
+                </div>
             </div>
         </nav>
     )
