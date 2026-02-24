@@ -15,8 +15,9 @@ export default function SellerDashboard() {
         description: '',
         category: 'GAMING',
         price: '',
-        imageUrl: '',
-        credential: ''
+        username: '',
+        password: '',
+        ticket: ''
     })
     const [status, setStatus] = useState('idle') // idle, encrypting, uploading, success, error
 
@@ -28,8 +29,16 @@ export default function SellerDashboard() {
             // 1. Fetch Server's RSA Public Key for key-wrapping
             const { data: keyData } = await axios.get('http://localhost:3000/api/keys/public')
 
+            // 1.5. Compile the raw credential object based on current category
+            let credentialRaw = {}
+            if (formData.category === 'EVENT_TICKET') {
+                credentialRaw = { ticket: formData.ticket }
+            } else {
+                credentialRaw = { username: formData.username, password: formData.password }
+            }
+
             // 2. Encrypt the credential locally (Zero-Knowledge Architecture)
-            const encryptedPayload = await encryptCredentialLocally(formData.credential, keyData.publicKey)
+            const encryptedPayload = await encryptCredentialLocally(credentialRaw, keyData.publicKey)
 
             setStatus('uploading')
 
@@ -42,7 +51,7 @@ export default function SellerDashboard() {
                 description: formData.description,
                 category: formData.category,
                 price: parseFloat(formData.price),
-                imageUrl: formData.imageUrl || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=400', // fallback image
+                imageUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=400', // Auto-fallback for aesthetic grid
                 credential: encryptedPayload // The ciphertext, iv, and RSA-wrapped AES key
             }, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -93,17 +102,21 @@ export default function SellerDashboard() {
                             </div>
                         </div>
 
-                        <div className="form-group">
-                            <label>Image URL (Optional)</label>
-                            <input type="text" value={formData.imageUrl} onChange={e => setFormData({ ...formData, imageUrl: e.target.value })} placeholder="https://..." />
-                        </div>
-
                         <div className="form-group credential-group">
                             <label>
-                                Secret Credential
+                                Secret Credentials
                                 <span className="secure-badge">🔒 End-to-End Encrypted</span>
                             </label>
-                            <input required type="password" value={formData.credential} onChange={e => setFormData({ ...formData, credential: e.target.value })} placeholder="Username:Password or Game Key" />
+
+                            {formData.category === 'EVENT_TICKET' ? (
+                                <input required type="text" value={formData.ticket} onChange={e => setFormData({ ...formData, ticket: e.target.value })} placeholder="Enter Ticket Number or Barcode" />
+                            ) : (
+                                <div className="form-row">
+                                    <input required type="text" value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })} placeholder="Username / Email" />
+                                    <input required type="password" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} placeholder="Password" />
+                                </div>
+                            )}
+
                             <small>This will be converted to military-grade AES ciphertext before leaving your browser.</small>
                         </div>
 

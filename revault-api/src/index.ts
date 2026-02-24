@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import { clerkMiddleware, requireAuth } from '@clerk/express'
@@ -16,7 +17,10 @@ app.use('/api/webhooks', webhookRoutes)
 app.use(express.json())
 
 // Apply clerk middleware specifically below webhooks
-app.use(clerkMiddleware())
+app.use(clerkMiddleware({
+    publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+    secretKey: process.env.CLERK_SECRET_KEY
+}))
 
 // Routes
 app.use('/api/assets', assetRoutes)
