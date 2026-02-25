@@ -1,5 +1,5 @@
 import nacl from 'tweetnacl'
-import { encodeBase64, decodeUTF8 } from 'tweetnacl-util'
+import { encodeBase64, decodeBase64, decodeUTF8 } from 'tweetnacl-util'
 
 export async function encryptCredentials(credentials, rsaPublicKeyPem) {
     const message = decodeUTF8(JSON.stringify(credentials))
@@ -25,10 +25,21 @@ export async function encryptCredentials(credentials, rsaPublicKeyPem) {
     }
 }
 
-function pemToArrayBuffer(pem) {
+function pemToArrayBuffer(pem: string) {
     const b64 = pem.replace(/-----[^-]+-----/g, '').replace(/\s/g, '')
     const binary = atob(b64)
     const buffer = new ArrayBuffer(binary.length)
     new Uint8Array(buffer).forEach((_, i, arr) => arr[i] = binary.charCodeAt(i))
     return buffer
+}
+
+export function decryptCredentials(ciphertext: string, iv: string, aesKeyB64: string): object {
+    const box = decodeBase64(ciphertext)
+    const nonce = decodeBase64(iv)
+    const key = decodeBase64(aesKeyB64)
+
+    const decrypted = nacl.secretbox.open(box, nonce, key)
+    if (!decrypted) throw new Error('Decryption failed')
+
+    return JSON.parse(new TextDecoder().decode(decrypted))
 }

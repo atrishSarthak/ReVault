@@ -15,6 +15,7 @@ model User {
   role      Role     @default(BUYER)
   createdAt DateTime @default(now())
   assets    Asset[]
+  purchases Transaction[]
 }
 
 enum Role {
@@ -36,6 +37,7 @@ model Asset {
   createdAt   DateTime              @default(now())
   verificationNote String?
   credential  EncryptedCredential?
+  transaction Transaction?
 }
 
 enum Category {
@@ -58,4 +60,20 @@ model EncryptedCredential {
   ciphertext   String
   encryptedKey String
   iv           String
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  assetId   String   @unique
+  asset     Asset    @relation(fields: [assetId], references: [id])
+  buyerId   String
+  buyer     User     @relation(fields: [buyerId], references: [id])
+  amount    Float
+  status    TxStatus @default(PENDING)
+  createdAt DateTime @default(now())
+}
+
+enum TxStatus {
+  PENDING
+  COMPLETED
 }

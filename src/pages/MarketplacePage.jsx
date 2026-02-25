@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import axios from 'axios'
+import { useAuth } from '@clerk/clerk-react'
 import Navbar from '../components/layout/Navbar'
 import './MarketplacePage.css'
 
@@ -38,6 +39,36 @@ const SORT_OPTIONS = [
 
 const TAGS = ['All Tags', 'Art', 'Music', 'Illustration', 'MOBA', 'FPS', 'Music Festival', 'Sports', 'Conference', 'Concert']
 
+function BuyButton({ assetId, price }) {
+    const { getToken, isSignedIn } = useAuth()
+
+    const buyMutation = useMutation({
+        mutationFn: async () => {
+            const token = await getToken()
+            const { data } = await axios.post(`${API}/api/purchases`,
+                { assetId },
+                { headers: { Authorization: `Bearer ${token}` } }
+            )
+            return data
+        },
+        onSuccess: () => alert('Purchase successful! Check your dashboard.'),
+        onError: (err) => alert(err.response?.data?.error || err.message || 'Purchase failed')
+    })
+
+    if (!isSignedIn) return <button className="asset-card__bid">Sign in to Buy</button>
+
+    return (
+        <button
+            onClick={() => buyMutation.mutate()}
+            disabled={buyMutation.isPending}
+            className={`asset-card__bid ${buyMutation.isPending ? 'opacity-50' : ''}`}
+            style={buyMutation.isPending ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
+        >
+            {buyMutation.isPending ? 'Processing...' : `Purchase`}
+        </button>
+    )
+}
+
 /* ── AssetCard ───────────────────────────────────────────── */
 function AssetCard({ asset }) {
     const [wishlist, setWishlist] = useState(false)
@@ -73,12 +104,11 @@ function AssetCard({ asset }) {
                     <div className="asset-card__price-block">
                         <span className="asset-card__label">Current Price</span>
                         <span className="asset-card__eth">
-                            <span className="asset-card__eth-icon">Ξ</span>
+                            <span className="asset-card__eth-icon">$</span>
                             {asset.price}
                         </span>
-                        <span className="asset-card__usd">≈ ${(asset.price * 3500).toLocaleString('en-US')}</span>
                     </div>
-                    <button className="asset-card__bid">Purchase</button>
+                    <BuyButton assetId={asset.id} price={asset.price} />
                 </div>
             </div>
         </article>

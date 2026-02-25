@@ -6,6 +6,7 @@ import SignInPage from './pages/SignInPage'
 import SignUpPage from './pages/SignUpPage'
 import CreateListing from './pages/seller/CreateListing'
 import AdminDashboard from './pages/admin/AdminDashboard'
+import BuyerDashboard from './pages/buyer/BuyerDashboard'
 
 function ProtectedRoute({ children }) {
   const { isSignedIn, isLoaded } = useAuth()
@@ -36,6 +37,13 @@ const App = () => {
         <Route path="/admin" element={
           <ProtectedRoute>
             <AdminDashboard />
+          </ProtectedRoute>
+        } />
+
+        {/* Protected Buyer Flow */}
+        <Route path="/buyer" element={
+          <ProtectedRoute>
+            <BuyerDashboard />
           </ProtectedRoute>
         } />
       </Routes>

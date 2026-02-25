@@ -11,7 +11,7 @@ export default function AdminDashboard() {
     const queryClient = useQueryClient()
     const [notes, setNotes] = useState<Record<string, string>>({})
 
-    const { data: queue, isLoading } = useQuery({
+    const { data: queue, isLoading, isError, error } = useQuery({
         queryKey: ['admin-queue'],
         queryFn: async () => {
             const token = await getToken()
@@ -34,6 +34,18 @@ export default function AdminDashboard() {
     })
 
     if (isLoading) return <div className="admin-dashboard-page"><div className="admin-container"><p className="admin-subtitle">Loading queue...</p></div></div>
+
+    if (isError) return (
+        <div className="admin-dashboard-page">
+            <div className="admin-container">
+                <h1 className="admin-title" style={{ color: '#f87171' }}>Access Denied</h1>
+                <p className="admin-subtitle text-red-500">
+                    You are not authorized to view the admin review queue.
+                    {(error as any)?.response?.data?.error || error?.message}
+                </p>
+            </div>
+        </div>
+    )
 
     return (
         <div className="admin-dashboard-page">

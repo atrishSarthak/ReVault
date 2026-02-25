@@ -39,7 +39,9 @@ function Navbar({ dark = false }) {
                         </Link>
                     </SignedOut>
                     <SignedIn>
-                        <Link to="/seller" className="navbar__link" style={{ marginRight: '1rem' }}>Dashboard</Link>
+                        <Link to="/buyer" className="navbar__link" style={{ marginRight: '1rem', color: '#a1a1aa' }}>My Vault</Link>
+                        <Link to="/seller" className="navbar__link" style={{ marginRight: '1rem' }}>Sell</Link>
+                        <Link to="/admin" className="navbar__link" style={{ marginRight: '1rem', color: '#4ade80' }}>Queue</Link>
                         <UserButton />
                     </SignedIn>
                 </div>

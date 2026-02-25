@@ -27,10 +27,12 @@ app.use(clerkMiddleware({
 app.use('/api/assets', assetRoutes)
 
 import adminRoutes from './routes/admin'
+import purchaseRoutes from './routes/purchases'
 
 // Protected endpoints using Clerk
 app.use('/api/seller', sellerRoutes)
 app.use('/api/admin', adminRoutes)
+app.use('/api/purchases', purchaseRoutes)
 
 // Expose public key for Client-Side RSA wrapping
 app.get('/api/keys/public', (req, res) => {
