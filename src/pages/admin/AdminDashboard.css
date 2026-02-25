@@ -1,0 +1,148 @@
+.admin-dashboard-page {
+    min-height: 100vh;
+    background-color: #09090b;
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: white;
+}
+
+.admin-container {
+    max-width: 56rem;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.admin-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.admin-subtitle {
+    color: #a1a1aa;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.admin-empty {
+    color: #71717a;
+    font-size: 1.25rem;
+    text-align: center;
+    margin-top: 4rem;
+}
+
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.admin-card {
+    background: rgba(24, 24, 27, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.admin-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.admin-card-category {
+    font-size: 0.75rem;
+    color: #4ade80;
+    text-transform: uppercase;
+    font-family: monospace;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+.admin-card-title {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0.25rem 0;
+}
+
+.admin-card-seller {
+    color: #a1a1aa;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.admin-card-desc {
+    color: #d4d4d8;
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.admin-card-price {
+    color: #4ade80;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.admin-textarea {
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 8px;
+    background-color: #18181b;
+    color: white;
+    border: 1px solid #3f3f46;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    resize: vertical;
+    transition: all 0.2s ease;
+}
+
+.admin-textarea:focus {
+    outline: none;
+    border-color: #22c55e;
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.admin-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.admin-btn-verify {
+    padding: 0.5rem 1.5rem;
+    background-color: #22c55e;
+    color: black;
+    font-weight: 700;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-btn-verify:hover {
+    background-color: #16a34a;
+    transform: translateY(-1px);
+}
+
+.admin-btn-reject {
+    padding: 0.5rem 1.5rem;
+    background-color: transparent;
+    color: #f87171;
+    font-weight: 700;
+    border-radius: 6px;
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-btn-reject:hover {
+    background-color: rgba(248, 113, 113, 0.1);
+    border-color: rgba(248, 113, 113, 0.5);
+}

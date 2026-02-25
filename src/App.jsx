@@ -5,6 +5,7 @@ import MarketplacePage from './pages/MarketplacePage'
 import SignInPage from './pages/SignInPage'
 import SignUpPage from './pages/SignUpPage'
 import CreateListing from './pages/seller/CreateListing'
+import AdminDashboard from './pages/admin/AdminDashboard'
 
 function ProtectedRoute({ children }) {
   const { isSignedIn, isLoaded } = useAuth()
@@ -28,6 +29,13 @@ const App = () => {
         <Route path="/seller" element={
           <ProtectedRoute>
             <CreateListing />
+          </ProtectedRoute>
+        } />
+
+        {/* Protected Admin Flow */}
+        <Route path="/admin" element={
+          <ProtectedRoute>
+            <AdminDashboard />
           </ProtectedRoute>
         } />
       </Routes>

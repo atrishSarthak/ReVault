@@ -34,6 +34,7 @@ model Asset {
   seller      User                  @relation(fields: [sellerId], references: [id])
   imageUrl    String?
   createdAt   DateTime              @default(now())
+  verificationNote String?
   credential  EncryptedCredential?
 }
 
