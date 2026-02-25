@@ -26,7 +26,7 @@ router.post('/assets', async (req: any, res) => {
         data: {
             title, description, category, price: parseFloat(price.toString()), imageUrl,
             sellerId: user.id,
-            status: 'VERIFIED',
+            status: 'PENDING',
             credential: {
                 create: {
                     ciphertext: encryptedCredential.ciphertext,
