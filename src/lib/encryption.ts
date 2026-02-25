@@ -1,8 +1,8 @@
 import nacl from 'tweetnacl'
-import { encodeBase64, encodeUTF8 } from 'tweetnacl-util'
+import { encodeBase64, decodeUTF8 } from 'tweetnacl-util'
 
 export async function encryptCredentials(credentials, rsaPublicKeyPem) {
-    const message = encodeUTF8(JSON.stringify(credentials))
+    const message = decodeUTF8(JSON.stringify(credentials))
     const aesKey = nacl.randomBytes(32)
     const iv = nacl.randomBytes(24)
     const ciphertext = nacl.secretbox(message, iv, aesKey)
