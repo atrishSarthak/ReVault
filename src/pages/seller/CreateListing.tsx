@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { encryptCredentials } from '../../lib/encryption'
 import axios from 'axios'
+import './CreateListing.css'
 
 const CATEGORIES = ['GAMING', 'DIGITAL_CONTENT', 'EVENT_TICKET']
 
@@ -46,48 +47,53 @@ export default function CreateListing() {
         }
     }
 
-    if (success) return <p className="text-green-400">Listing submitted for admin review!</p>
+    if (success) return (
+        <div className="success-message">
+            Listing submitted for admin review!
+        </div>
+    )
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto p-8">
-            <h1 className="text-2xl font-bold text-white">Create Listing</h1>
+        <div className="create-listing-page">
+            <form onSubmit={handleSubmit} className="create-listing-form">
+                <h1 className="create-listing-title">Create Listing</h1>
 
-            <input placeholder="Title" value={form.title}
-                onChange={e => setForm({ ...form, title: e.target.value })}
-                className="w-full p-3 rounded bg-zinc-800 text-white" required />
+                <input placeholder="Title" value={form.title}
+                    onChange={e => setForm({ ...form, title: e.target.value })}
+                    className="create-listing-input" required />
 
-            <textarea placeholder="Description" value={form.description}
-                onChange={e => setForm({ ...form, description: e.target.value })}
-                className="w-full p-3 rounded bg-zinc-800 text-white" required />
+                <textarea placeholder="Description" value={form.description}
+                    onChange={e => setForm({ ...form, description: e.target.value })}
+                    className="create-listing-textarea" required />
 
-            <select value={form.category}
-                onChange={e => setForm({ ...form, category: e.target.value })}
-                className="w-full p-3 rounded bg-zinc-800 text-white">
-                {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
+                <select value={form.category}
+                    onChange={e => setForm({ ...form, category: e.target.value })}
+                    className="create-listing-select">
+                    {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
 
-            <input type="number" placeholder="Price (USD)" value={form.price}
-                onChange={e => setForm({ ...form, price: e.target.value })}
-                className="w-full p-3 rounded bg-zinc-800 text-white" required />
+                <input type="number" placeholder="Price (USD)" value={form.price}
+                    onChange={e => setForm({ ...form, price: e.target.value })}
+                    className="create-listing-input" required />
 
-            <input placeholder="Image URL" value={form.imageUrl}
-                onChange={e => setForm({ ...form, imageUrl: e.target.value })}
-                className="w-full p-3 rounded bg-zinc-800 text-white" />
+                <input placeholder="Image URL (Optional)" value={form.imageUrl}
+                    onChange={e => setForm({ ...form, imageUrl: e.target.value })}
+                    className="create-listing-input" />
 
-            <div className="border border-green-500/30 rounded p-4 space-y-3">
-                <p className="text-green-400 text-sm font-medium">🔒 Credentials — encrypted in your browser before submission</p>
-                <input placeholder="Username / Email" value={creds.username}
-                    onChange={e => setCreds({ ...creds, username: e.target.value })}
-                    className="w-full p-3 rounded bg-zinc-800 text-white" required />
-                <input type="password" placeholder="Password" value={creds.password}
-                    onChange={e => setCreds({ ...creds, password: e.target.value })}
-                    className="w-full p-3 rounded bg-zinc-800 text-white" required />
-            </div>
+                <div className="encryption-container">
+                    <p className="encryption-notice">🔒 Credentials — encrypted in your browser before submission</p>
+                    <input placeholder="Username / Email" value={creds.username}
+                        onChange={e => setCreds({ ...creds, username: e.target.value })}
+                        className="create-listing-input encryption-input" required />
+                    <input type="password" placeholder="Password" value={creds.password}
+                        onChange={e => setCreds({ ...creds, password: e.target.value })}
+                        className="create-listing-input encryption-input" required />
+                </div>
 
-            <button type="submit" disabled={loading}
-                className="w-full p-3 bg-green-500 text-black font-bold rounded hover:bg-green-400">
-                {loading ? 'Encrypting & Submitting...' : 'Submit Listing'}
-            </button>
-        </form>
+                <button type="submit" disabled={loading} className="create-listing-submit">
+                    {loading ? 'Encrypting & Submitting...' : 'Submit Listing'}
+                </button>
+            </form>
+        </div>
     )
 }
